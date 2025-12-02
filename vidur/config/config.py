@@ -605,6 +605,59 @@ class RandomForrestExecutionTimePredictorConfig(BaseExecutionTimePredictorConfig
     def get_type():
         return ExecutionTimePredictorType.RANDOM_FORREST
 
+@dataclass
+class LSTMExecutionTimePredictorConfig(BaseExecutionTimePredictorConfig):
+    hidden_size: List[int] = field(
+        default_factory=lambda: [32, 64, 128],
+        metadata={"help": "Hidden size of LSTM."},
+    )
+    num_layers: List[int] = field(
+        default_factory=lambda: [1, 2],
+        metadata={"help": "Number of LSTM layers."},
+    )
+    dropout: List[float] = field(
+        default_factory=lambda: [0.0, 0.1, 0.2],
+        metadata={"help": "Dropout rate for LSTM (applied if num_layers>1)."},
+    )
+    learning_rate: List[float] = field(
+        default_factory=lambda: [1e-3, 3e-3],
+        metadata={"help": "Learning rate for optimizer."},
+    )
+    batch_size: List[int] = field(
+        default_factory=lambda: [128, 256],
+        metadata={"help": "Batch size for training."},
+    )
+    max_epochs: List[int] = field(
+        default_factory=lambda: [20],
+        metadata={"help": "Maximum training epochs."},
+    )
+
+    @staticmethod
+    def get_type():
+        return ExecutionTimePredictorType.LSTM
+
+@dataclass
+class MetaLearningExecutionTimePredictorConfig(LinearRegressionExecutionTimePredictorConfig, RandomForrestExecutionTimePredictorConfig):
+    source_device: str = field(
+        default="a100",
+        metadata={"help": "Source device for meta learning (e.g., a100)."},
+    )
+    target_data_fraction: float = field(
+        default=0.1,
+        metadata={"help": "Fraction of target data to use for training (0.0 to 1.0)."},
+    )
+    source_model_type: str = field(
+        default="random_forrest",
+        metadata={"help": "Source model type: 'linear_regression' or 'random_forrest'."}
+    )
+    meta_model_type: str = field(
+        default="random_forrest",
+        metadata={"help": "Meta (mapping) model type: 'linear_regression' or 'random_forrest'."}
+    )
+
+    @staticmethod
+    def get_type():
+        return ExecutionTimePredictorType.META_LEARNING
 
 @dataclass
 class ClusterConfig:

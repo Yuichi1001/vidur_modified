@@ -4,6 +4,12 @@ from vidur.execution_time_predictor.linear_regression_execution_time_predictor i
 from vidur.execution_time_predictor.random_forrest_execution_time_predictor import (
     RandomForrestExecutionTimePredictor,
 )
+from vidur.execution_time_predictor.lstm_execution_time_predictor import (
+    LSTMExecutionTimePredictor,
+)
+from vidur.execution_time_predictor.meta_learning_execution_time_predictor import (
+    MetaLearningExecutionTimePredictor,
+)
 from vidur.types import ExecutionTimePredictorType
 from vidur.utils.base_registry import BaseRegistry
 
@@ -19,4 +25,10 @@ ExecutionTimePredictorRegistry.register(
 )
 ExecutionTimePredictorRegistry.register(
     ExecutionTimePredictorType.LINEAR_REGRESSION, LinearRegressionExecutionTimePredictor
+)
+ExecutionTimePredictorRegistry.register(
+    ExecutionTimePredictorType.LSTM, LSTMExecutionTimePredictor
+)
+ExecutionTimePredictorRegistry.register(
+    ExecutionTimePredictorType.META_LEARNING, MetaLearningExecutionTimePredictor
 )
